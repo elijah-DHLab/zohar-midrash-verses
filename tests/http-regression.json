@@ -1,0 +1,18 @@
+{
+  "test": "HTTP worker URL resolution under /project/",
+  "previous_release": "5.5",
+  "previous_status": "error",
+  "previous_missing_path": "/project/assets/data/indexes/zohar.json",
+  "fixed_release": "5.7",
+  "fixed_status": "result",
+  "initial_pair_count": 13,
+  "target_books": [
+    "midrash-tanchuma",
+    "midrash-tanchuma-buber"
+  ],
+  "missing_requests": 0,
+  "browser_visual_validation": false,
+  "multi_select_all_base_units": 3093,
+  "verified_recovery_actions": true,
+  "multi_selection_saved_queries": true
+}

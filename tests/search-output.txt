@@ -1,0 +1,73 @@
+{
+  "gapped_false": {
+    "baseUnits": 2610,
+    "targetUnits": 1981,
+    "potentialPairs": 5170410,
+    "candidates": 7416,
+    "alignments": 6401,
+    "matches": 5950,
+    "max": 12,
+    "ms": 364
+  },
+  "gapped_true": {
+    "baseUnits": 2561,
+    "targetUnits": 1981,
+    "potentialPairs": 5073341,
+    "candidates": 6143,
+    "alignments": 4918,
+    "matches": 4455,
+    "max": 9,
+    "ms": 280
+  },
+  "contiguous_false": {
+    "baseUnits": 2610,
+    "targetUnits": 1981,
+    "potentialPairs": 5170410,
+    "candidates": 7416,
+    "alignments": 6401,
+    "matches": 2803,
+    "max": 10,
+    "ms": 271
+  },
+  "contiguous_true": {
+    "baseUnits": 2561,
+    "targetUnits": 1981,
+    "potentialPairs": 5073341,
+    "candidates": 6143,
+    "alignments": 4918,
+    "matches": 2413,
+    "max": 9,
+    "ms": 273
+  },
+  "bag_false": {
+    "baseUnits": 2610,
+    "targetUnits": 1981,
+    "potentialPairs": 5170410,
+    "candidates": 7416,
+    "alignments": 6401,
+    "matches": 6401,
+    "max": 12,
+    "ms": 260
+  },
+  "bag_true": {
+    "baseUnits": 2561,
+    "targetUnits": 1981,
+    "potentialPairs": 5073341,
+    "candidates": 6143,
+    "alignments": 4918,
+    "matches": 4918,
+    "max": 9,
+    "ms": 258
+  },
+  "sparseBenchmark": {
+    "baseUnits": 1,
+    "targetUnits": 10000,
+    "potentialPairs": 10000,
+    "candidates": 1,
+    "alignments": 1,
+    "matches": 1,
+    "max": 2,
+    "ms": 1
+  }
+}
+PASS: matches equal brute force in all modes and filters; no full texts loaded; sparse candidate benchmark passes.

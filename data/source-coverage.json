@@ -1,0 +1,61 @@
+{
+  "summary": "כל יחידות קובצי ה־ZIP שסופקו נקלטו; שבע יחידות תנחומא נוספות נשמרו מהטעינה הישירה הקודמת.",
+  "date": "2026-11-03",
+  "books": [
+    {
+      "id": "midrash-tanchuma",
+      "title": "תנחומא",
+      "archive": "Tanhumah-20261103T105957Z-1-001.zip",
+      "units": 908,
+      "events": 17134,
+      "additionalPreviousUnits": 7,
+      "unitsWithText": 908,
+      "emptyTextUnits": [],
+      "allArchiveUnitsImported": true
+    },
+    {
+      "id": "midrash-tanchuma-buber",
+      "title": "תנחומא בובר",
+      "archive": "Midrash_Tanchuma_Buber-20261103T110043Z-1-001.zip",
+      "units": 1073,
+      "events": 14478,
+      "additionalPreviousUnits": 0,
+      "unitsWithText": 1073,
+      "emptyTextUnits": [],
+      "allArchiveUnitsImported": true
+    },
+    {
+      "id": "zohar",
+      "title": "זוהר",
+      "archive": "Zohar-20261103T105931Z-1-001.zip",
+      "units": 3093,
+      "events": 32193,
+      "additionalPreviousUnits": 0,
+      "unitsWithText": 3090,
+      "emptyTextUnits": [
+        "Kabbalah_Zohar__Addenda_53_1_1",
+        "Kabbalah_Zohar__Addenda_53_2_1",
+        "Kabbalah_Zohar__Addenda_53_3_1"
+      ],
+      "allArchiveUnitsImported": true
+    }
+  ],
+  "archives": [
+    {
+      "name": "Midrash_Tanchuma_Buber-20261103T110043Z-1-001.zip",
+      "sha256": "2fcf2b06e05079a0003ca2272604bb8a9e227de7c6d146985873f2463f7534b4",
+      "jsonFiles": 1073
+    },
+    {
+      "name": "Tanhumah-20261103T105957Z-1-001.zip",
+      "sha256": "ddde6bd11199afa056b66409f537e1efb72a28a462927eed3074379c99f8f4fa",
+      "jsonFiles": 901
+    },
+    {
+      "name": "Zohar-20261103T105931Z-1-001.zip",
+      "sha256": "3ed3466ce76edc167078e09ffdb08c9ff01f51ed284414b917bc709d7abf4e73",
+      "jsonFiles": 3093
+    }
+  ],
+  "bibliographicCompletenessVerified": false
+}
