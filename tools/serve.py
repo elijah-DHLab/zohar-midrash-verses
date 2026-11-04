@@ -16,8 +16,8 @@ for port in range(a.port,min(65536,a.port+20)):
   continue
 if server is None:raise SystemExit('No free local port. Close an older server or use --port.')
 with server:
- url=f'http://127.0.0.1:{server.server_port}/?release=5.7'
- print('Verse Search 5.7 — '+str(root),flush=True);print(url,flush=True)
+ url=f'http://127.0.0.1:{server.server_port}/?release=6.1'
+ print('Verse Search 6.1 — '+str(root),flush=True);print(url,flush=True)
  if not a.no_browser:webbrowser.open(url,new=2)
  try:server.serve_forever()
  except KeyboardInterrupt:pass
