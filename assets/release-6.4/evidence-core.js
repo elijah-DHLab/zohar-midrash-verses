@@ -12,11 +12,11 @@ function edges(es,refs,permuted=false){const out=new Set();for(let i=1;i<es.leng
 function sharedEdges(a,b,refs,permuted=false){const x=edges(a,refs,permuted),y=edges(b,refs,permuted);return [...x].filter(k=>y.has(k));}
 function alignment(a,b,mode='gapped'){return C.longest(a,b,mode);}
 function distinctShared(a,b){const x=new Set(S.candidateKeys(a)),y=new Set(S.candidateKeys(b));return [...x].filter(k=>y.has(k));}
-function pair(z,t,q,opts={}){const options={...q.options,...opts},a=seq(z,options),b=seq(t,options),m=alignment(a,b,options.mode||'bag');return {a,b,m,length:m.ai.length,distinct:new Set(m.keys).size,ambiguous:m.ai.filter((ix,k)=>a[ix].ambiguous||b[m.bi[k]].ambiguous).length};}
+function pair(z,t,q,opts={},refs=[]){const options={...q.options,...opts},a=seq(z,options),b=seq(t,options),m=alignment(a,b,options.mode||'bag');return {a,b,m,length:S.accepted(m,a,b,options,refs)?m.ai.length:0,distinct:new Set(m.keys).size,ambiguous:m.ai.filter((ix,k)=>a[ix].ambiguous||b[m.bi[k]].ambiguous).length};}
 function resultRow(z,t,bid,p){return {base:'zohar',zid:z.id,zlabel:z.label,zshard:z.shard,target:bid,tid:t.id,tlabel:t.label,tshard:t.shard,keys:p.m.keys,zi:p.m.ae,ti:p.m.be,length:p.length,distinct:p.distinct,ambiguous:p.ambiguous};}
 function stripFirst(z){return S.sites(z)[0]?.keys||[];}
 function stages(z,t,q,refs){
- const legacy=pair(z,t,q,{ambiguity:'legacy'}),site=pair(z,t,q,{ambiguity:'site'}),certain=pair(z,t,q,{ambiguity:'exclude'}),clean=pair(z,t,q,{ambiguity:'exclude',excludeKeys:stripFirst(z)}),min=q.min||2,unique=Math.max(3,min),flags=[];
+ const legacy=pair(z,t,q,{ambiguity:'legacy'},refs),site=pair(z,t,q,{ambiguity:'site'},refs),certain=pair(z,t,q,{ambiguity:'exclude'},refs),clean=pair(z,t,q,{ambiguity:'exclude',excludeKeys:stripFirst(z)},refs),min=q.min||2,unique=Math.max(3,min),flags=[];
  flags.push(legacy.length>=min);flags.push(site.length>=min);flags.push(flags[1]&&certain.length>=min);flags.push(flags[2]&&certain.distinct>=unique);flags.push(flags[3]&&clean.length>=min&&clean.distinct>=unique);flags.push(flags[4]&&sharedEdges(clean.a,clean.b,refs).length>0);
  return {flags,legacy,site,certain,clean,edges:sharedEdges(certain.a,certain.b,refs),openingEdges:sharedEdges(clean.a,clean.b,refs)};
 }

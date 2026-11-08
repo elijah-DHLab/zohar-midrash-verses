@@ -14,7 +14,7 @@ const labQuestions=[
 ];
 function labQuery(){
  const scope=$('#labScope').value,base='zohar',targets=selectedTargets(),ids=[base,...targets];
- let q={base,targets,options:{mode:$('#labMode').value||'gapped',collapse:true,short:false},min:Math.max(2,+$('#labMin').value||2),cohort:scope==='search'||scope==='source'};
+ let q={base,targets,options:{mode:$('#labMode').value||'gapped',collapse:true,short:false,excludeBiblical:$('#excludeBiblical').checked},min:Math.max(2,+$('#labMin').value||2),cohort:scope==='search'||scope==='source'};
  if(scope==='search')q={...q,...selectionQuery(),options:options(),min:Math.max(2,+$('#lengthN').value||2),...(lastQuery?{...lastQuery,cohort:true}:{})};
  if(scope==='custom'&&labOverride)q={...labOverride,base:'zohar',targets,options:{...labOverride.options,mode:$('#labMode').value},min:Math.max(2,+$('#labMin').value||2)};
  if(scope==='intersection'){const x=$('#labIntersection').value;q.intersection=x==='all'?ids:['zohar',x];if(x!=='all'&&!q.targets.includes(x))q.targets=[...q.targets,x];}

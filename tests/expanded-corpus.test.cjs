@@ -1,5 +1,5 @@
 const assert=require('node:assert/strict'),fs=require('fs'),path=require('path');
-const root=path.join(__dirname,'..'),read=require('./read-data.cjs'),C=require('../assets/release-6.3/sequence-core.js'),S=require('../assets/release-6.3/search-core.js'),D=require('../assets/release-6.3/data-loader.js');
+const root=path.join(__dirname,'..'),read=require('./read-data.cjs'),C=require('../assets/release-6.4/sequence-core.js'),S=require('../assets/release-6.4/search-core.js'),D=require('../assets/release-6.4/data-loader.js');
 (async()=>{
  const m=read('manifest.json'),targets=m.books.filter(b=>b.id!=='zohar').map(b=>b.id),base=read(m.books.find(b=>b.id==='zohar').index);assert.equal(m.units,9217);assert.equal(targets.length,9);assert.equal(m.events,153459);
  const expected={'bereishit-rabbah':456,'vayikra-rabbah':195,'shemot-rabbah':272,'bamidbar-rabbah':293,'devarim-rabbah':93,'pesikta-drav-kahanna':176,'yalkut-shimoni-on-torah':2658};for(const [id,n] of Object.entries(expected)){const b=m.books.find(b=>b.id===id);assert.equal(b.units,n);const idx=read(b.index);assert(idx.units.every(u=>u.label.includes('יחידת מקור')));assert.equal(new Set(idx.units.map(u=>u.label)).size,n);}

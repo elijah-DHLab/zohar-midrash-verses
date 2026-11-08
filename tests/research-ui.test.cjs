@@ -38,12 +38,12 @@ function absorb(text) {
 absorb(html);
 const listeners={},windowListeners={};
 const document={body:node('body'),documentElement:node('html'),baseURI:'http://localhost/project/',createElement:()=>node('new'),addEventListener(t,f){(listeners[t]||=[]).push(f)},querySelector:s=>nodes.get(s.slice(1))||null,querySelectorAll:s=>s==='.page'?[...nodes.values()].filter(x=>x.id.startsWith('page-')):[]};
-const stored=new Map();const ctx=vm.createContext({VerseEvidence:require(root+'/assets/release-6.3/evidence-core.js'),document,console,URL,setTimeout,clearTimeout,Event:class{constructor(t){this.type=t}},requestAnimationFrame:f=>f(),history:{replaceState(){}},localStorage:{getItem:k=>stored.get(k),setItem:(k,v)=>stored.set(k,v)},fetch:async p=>({ok:true,json:async()=>JSON.parse(fs.readFileSync(root+'/data/'+String(p).replace(/^data\//,'').split('?')[0]))})});
+const stored=new Map();const ctx=vm.createContext({VerseEvidence:require(root+'/assets/release-6.4/evidence-core.js'),document,console,URL,setTimeout,clearTimeout,Event:class{constructor(t){this.type=t}},requestAnimationFrame:f=>f(),history:{replaceState(){}},localStorage:{getItem:k=>stored.get(k),setItem:(k,v)=>stored.set(k,v)},fetch:async p=>({ok:true,json:async()=>JSON.parse(fs.readFileSync(root+'/data/'+String(p).replace(/^data\//,'').split('?')[0]))})});
 ctx.window=ctx;ctx.addEventListener=(t,f)=>(windowListeners[t]||=[]).push(f);ctx.dispatchEvent=e=>(windowListeners[e.type]||[]).forEach(f=>f(e));
-for(const f of ['sequence-core','search-core','evidence-core','selection','guidance'])vm.runInContext(fs.readFileSync(root+'/assets/release-6.3/'+f+'.js','utf8'),ctx);
-vm.runInContext(fs.readFileSync(root+'/assets/release-6.3/app.js','utf8').split("document.addEventListener('click'")[0],ctx);
-vm.runInContext(fs.readFileSync(root+'/assets/release-6.3/sources.js','utf8'),ctx);
-for(const f of ['research-core','research'])vm.runInContext(fs.readFileSync(root+'/assets/release-6.3/'+f+'.js','utf8'),ctx);
+for(const f of ['sequence-core','search-core','evidence-core','selection','guidance'])vm.runInContext(fs.readFileSync(root+'/assets/release-6.4/'+f+'.js','utf8'),ctx);
+vm.runInContext(fs.readFileSync(root+'/assets/release-6.4/app.js','utf8').split("document.addEventListener('click'")[0],ctx);
+vm.runInContext(fs.readFileSync(root+'/assets/release-6.4/sources.js','utf8'),ctx);
+for(const f of ['research-core','research'])vm.runInContext(fs.readFileSync(root+'/assets/release-6.4/'+f+'.js','utf8'),ctx);
 ctx.DataFiles={read:async p=>readData(p)};const data=readData;const m=data('manifest.json'),v=data(m.verses),base=data(m.books.find(x=>x.id==='zohar').index);Object.assign(ctx,{m,v,base});vm.runInContext('manifest=m;verses=v;baseIndex=base;SourceUI.init();renderTrains=()=>ResearchUI.trains();',ctx);
 function click(attrs){const b={dataset:{},hasAttribute:k=>k in attrs,...attrs};for(const f of listeners.click||[])f({target:{closest:s=>s==='button,[data-rpoint]'?b:null}});}
 (async()=>{

@@ -1,14 +1,14 @@
 const fs=require('fs'),vm=require('vm'),assert=require('assert'),root=__dirname+'/..';
 const read=require('./read-data.cjs');
-const C=require(root+'/assets/release-6.3/sequence-core.js'),S=require(root+'/assets/release-6.3/search-core.js');
+const C=require(root+'/assets/release-6.4/sequence-core.js'),S=require(root+'/assets/release-6.4/search-core.js');
 const m=read('manifest.json'),v=read(m.verses),base=read(m.books.find(b=>b.id==='zohar').catalog);
 const nodes=new Map();function node(k){if(!nodes.has(k))nodes.set(k,{value:'',innerHTML:'',textContent:'',checked:false,hidden:false,scrollTop:0,style:{setProperty(){}},classList:{toggle(){},remove(){},add(){},contains(){return false}},scrollIntoView(){},getBoundingClientRect(){return {top:0}},querySelector(s){const n=s.match(/data-token="(\d+)"/);return n?{classList:{add(){}},getBoundingClientRect(){return {top:+n[1]*10}}}:null;}});return nodes.get(k);}
 const targets=m.books.filter(b=>b.id!=='zohar').map(b=>({dataset:{target:b.id},checked:true}));
-const ctx=vm.createContext({VerseEvidence:require(root+'/assets/release-6.3/evidence-core.js'),VerseCore:C,VerseSearch:S,document:{body:{dataset:{}},querySelector:node,querySelectorAll:s=>s.startsWith('[data-target]')?targets:[]},fetch:async p=>({ok:true,json:()=>read(p.replace(/^data\//,'').split('?')[0])}),requestAnimationFrame:f=>f(),setTimeout,clearTimeout,console});
+const ctx=vm.createContext({VerseEvidence:require(root+'/assets/release-6.4/evidence-core.js'),VerseCore:C,VerseSearch:S,document:{body:{dataset:{}},querySelector:node,querySelectorAll:s=>s.startsWith('[data-target]')?targets:[]},fetch:async p=>({ok:true,json:()=>read(p.replace(/^data\//,'').split('?')[0])}),requestAnimationFrame:f=>f(),setTimeout,clearTimeout,console});
 ctx.URL=URL;ctx.document.baseURI='https://example.test/project/';ctx.SourceUI={chosen:()=>{const id=node('#comparisonBook').value;return id==='both'?['midrash-tanchuma','midrash-tanchuma-buber']:[id||'midrash-tanchuma'];},init(){},set(ids){node('#comparisonBook').value=ids.length>1?'both':ids[0];},purpose(){return {role:'מדרש משווה'};},resultsForView:()=>vm.runInContext('results',ctx),filterLabel:()=>'',resetFilter(){},resultStats(){},displayTargets:(ids,id)=>[id,...ids.filter(x=>x!==id)].slice(0,2)};ctx.DataFiles={read:async p=>read(p)};
-for(const file of ['selection.js','guidance.js'])vm.runInContext(fs.readFileSync(root+'/assets/release-6.3/'+file,'utf8'),ctx);
-vm.runInContext(fs.readFileSync(root+'/assets/release-6.3/app.js','utf8').split("document.addEventListener('click'")[0],ctx);
-vm.runInContext(fs.readFileSync(root+'/assets/release-6.3/analytics.js','utf8').split("document.addEventListener('click'")[0],ctx);
+for(const file of ['selection.js','guidance.js'])vm.runInContext(fs.readFileSync(root+'/assets/release-6.4/'+file,'utf8'),ctx);
+vm.runInContext(fs.readFileSync(root+'/assets/release-6.4/app.js','utf8').split("document.addEventListener('click'")[0],ctx);
+vm.runInContext(fs.readFileSync(root+'/assets/release-6.4/analytics.js','utf8').split("document.addEventListener('click'")[0],ctx);
 Object.assign(ctx,{m,v,base});vm.runInContext('manifest=m;verses=v;baseIndex=base;',ctx);
 node('#comparisonBook').value='midrash-tanchuma';node('#contextRange').value='0';node('#base').value='zohar';node('#unit').value=base.units[0].id;node('#mode').value='gapped';node('#collapse').checked=true;node('#lengthN').value=2;node('#trainAll').checked=true;
 (async()=>{

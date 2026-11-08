@@ -25,7 +25,7 @@ async function loadAnalytics(){
    for(const i of VerseSearch.candidates(VerseSearch.candidateKeys(es),idx,q.min)){
     const u=idx.units[i],ts=VerseSearch.sequence(u,q.options);if(VerseSearch.multisetUpper(es,ts)<q.min)continue;
     const ordered=VerseCore.longest(es,ts,'gapped'),bag=VerseCore.longest(es,ts,'bag'),contiguous=VerseCore.longest(es,ts,'contiguous');
-    const alignment={gapped:ordered,bag,contiguous}[q.options.mode];if(alignment.ai.length<q.min)continue;
+    const alignment={gapped:ordered,bag,contiguous}[q.options.mode];if(alignment.ai.length<q.min||!VerseSearch.accepted(alignment,es,ts,q.options,verses))continue;
     rows.push({book:bid,z,u,length:alignment.ai.length,ordered:ordered.ai.length,bag:bag.ai.length,contiguous:contiguous.ai.length,alignment});
    }
   }
@@ -111,7 +111,7 @@ function renderVisualization(){
  $('#vizNote').textContent='היקף: כל הזוגות בחיפוש, מעבר להגבלת התצוגה. ספירות בתוך טקסט בתרשימים הוותיקים הן רשומות זיהוי, לרבות חלופות; אורכי ההתאמה משתמשים בספירת ההופעות שנבחרה. '+zs.length+' דרשות בסיס והמקבילות שלהן · כל רצף מחושב בתוך דרשה נפרדת · החיפוש והתרשימים משתמשים באותם מסננים · ספירות פסוקים בתוך טקסט כוללות את כל ההופעות שבמקור. אפשר לפתוח כל עדות ולבדוק אותה.';
 }
 async function openEvidence(r){
- if(r.alignment){const q=analyticsData.q;$('#base').value=q.base;await changeBase();fillUnits(r.z.id);SourceUI.set(q.targets);$('#mode').value=q.options.mode;$('#collapse').checked=q.options.collapse;$('#short').checked=q.options.short;$('#ambiguity').value=q.options.ambiguity||'site';$('#lengthN').value=q.min;showPage('search');await run(r.u.id);return;}
+ if(r.alignment){const q=analyticsData.q;$('#base').value=q.base;await changeBase();fillUnits(r.z.id);SourceUI.set(q.targets);$('#mode').value=q.options.mode;$('#collapse').checked=q.options.collapse;$('#short').checked=q.options.short;$('#ambiguity').value=q.options.ambiguity||'site';$('#excludeBiblical').checked=!!q.options.excludeBiblical;$('#lengthN').value=q.min;showPage('search');await run(r.u.id);return;}
  await browseTo(r.book,r.u.id);
  if(r.event!==undefined){const e=browseRecord?.events[r.event],box=$('#browseReader .read-text');if(e&&box){for(const pos of e.pos)box.querySelector('[data-token="'+pos+'"]')?.classList.add('token-focus');const mark=box.querySelector('[data-token="'+e.pos[0]+'"]');if(mark)box.scrollTop+=mark.getBoundingClientRect().top-box.getBoundingClientRect().top-45;}}
 }
