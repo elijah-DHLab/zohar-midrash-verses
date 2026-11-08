@@ -1,6 +1,6 @@
 const fs=require('fs'),assert=require('assert'),path=require('path');
-const root=path.join(__dirname,'..'),S=require('../assets/search-core.js'),L=require('../assets/lab-core.js');
-const read=p=>JSON.parse(fs.readFileSync(path.join(root,'data',p),'utf8'));
+const root=path.join(__dirname,'..'),S=require('../assets/release-6.3/search-core.js'),L=require('../assets/release-6.3/lab-core.js');
+const read=require('./read-data.cjs');
 (async()=>{
  const manifest=read('manifest.json'),engine=new S.Engine(manifest,read),index=read(manifest.books.find(b=>b.id==='zohar').index),targets=['midrash-tanchuma','midrash-tanchuma-buber'];
  const sections=[...new Set(index.units.map(u=>u.section))].slice(0,2),selected=index.units.filter(u=>sections.includes(u.section));

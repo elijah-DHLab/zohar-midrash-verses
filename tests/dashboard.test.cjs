@@ -1,13 +1,14 @@
 const fs=require('fs'),vm=require('vm'),assert=require('assert'),root=__dirname+'/..';
-const read=p=>JSON.parse(fs.readFileSync(root+'/data/'+p));
-const C=require(root+'/assets/sequence-core.js'),S=require(root+'/assets/search-core.js');
+const read=require('./read-data.cjs');
+const C=require(root+'/assets/release-6.3/sequence-core.js'),S=require(root+'/assets/release-6.3/search-core.js');
 const m=read('manifest.json'),v=read(m.verses),base=read(m.books.find(b=>b.id==='zohar').catalog);
 const nodes=new Map();function node(k){if(!nodes.has(k))nodes.set(k,{value:'',innerHTML:'',textContent:'',checked:false,hidden:false,scrollTop:0,style:{setProperty(){}},classList:{toggle(){},remove(){},add(){},contains(){return false}},scrollIntoView(){},getBoundingClientRect(){return {top:0}},querySelector(s){const n=s.match(/data-token="(\d+)"/);return n?{classList:{add(){}},getBoundingClientRect(){return {top:+n[1]*10}}}:null;}});return nodes.get(k);}
 const targets=m.books.filter(b=>b.id!=='zohar').map(b=>({dataset:{target:b.id},checked:true}));
-const ctx=vm.createContext({VerseCore:C,VerseSearch:S,document:{body:{dataset:{}},querySelector:node,querySelectorAll:s=>s.startsWith('[data-target]')?targets:[]},fetch:async p=>({ok:true,json:()=>read(p.replace(/^data\//,'').split('?')[0])}),requestAnimationFrame:f=>f(),setTimeout,clearTimeout,console});
-for(const file of ['selection.js','guidance.js'])vm.runInContext(fs.readFileSync(root+'/assets/'+file,'utf8'),ctx);
-vm.runInContext(fs.readFileSync(root+'/assets/app.js','utf8').split("document.addEventListener('click'")[0],ctx);
-vm.runInContext(fs.readFileSync(root+'/assets/analytics.js','utf8').split("document.addEventListener('click'")[0],ctx);
+const ctx=vm.createContext({VerseEvidence:require(root+'/assets/release-6.3/evidence-core.js'),VerseCore:C,VerseSearch:S,document:{body:{dataset:{}},querySelector:node,querySelectorAll:s=>s.startsWith('[data-target]')?targets:[]},fetch:async p=>({ok:true,json:()=>read(p.replace(/^data\//,'').split('?')[0])}),requestAnimationFrame:f=>f(),setTimeout,clearTimeout,console});
+ctx.URL=URL;ctx.document.baseURI='https://example.test/project/';ctx.SourceUI={chosen:()=>{const id=node('#comparisonBook').value;return id==='both'?['midrash-tanchuma','midrash-tanchuma-buber']:[id||'midrash-tanchuma'];},init(){},set(ids){node('#comparisonBook').value=ids.length>1?'both':ids[0];},purpose(){return {role:'מדרש משווה'};},resultsForView:()=>vm.runInContext('results',ctx),filterLabel:()=>'',resetFilter(){},resultStats(){},displayTargets:(ids,id)=>[id,...ids.filter(x=>x!==id)].slice(0,2)};ctx.DataFiles={read:async p=>read(p)};
+for(const file of ['selection.js','guidance.js'])vm.runInContext(fs.readFileSync(root+'/assets/release-6.3/'+file,'utf8'),ctx);
+vm.runInContext(fs.readFileSync(root+'/assets/release-6.3/app.js','utf8').split("document.addEventListener('click'")[0],ctx);
+vm.runInContext(fs.readFileSync(root+'/assets/release-6.3/analytics.js','utf8').split("document.addEventListener('click'")[0],ctx);
 Object.assign(ctx,{m,v,base});vm.runInContext('manifest=m;verses=v;baseIndex=base;',ctx);
 node('#comparisonBook').value='midrash-tanchuma';node('#contextRange').value='0';node('#base').value='zohar';node('#unit').value=base.units[0].id;node('#mode').value='gapped';node('#collapse').checked=true;node('#lengthN').value=2;node('#trainAll').checked=true;
 (async()=>{
@@ -38,12 +39,12 @@ node('#comparisonBook').value='midrash-tanchuma';node('#contextRange').value='0'
  Object.assign(ctx,{r:rs.results[0],q});vm.runInContext('activeResult=r;lastQuery=q;matches=[{book:r.target,count:1,units:[{id:r.tid,shard:r.tshard,label:r.tlabel,indices:r.ti}]}];bookColumns=[r.target];sourceColumns={[r.target]:r.tid};',ctx);
  await vm.runInContext('renderComparison()',ctx);
  const cols=vm.runInContext('loadedColumns',ctx),colors=vm.runInContext('eventPalette',ctx);
- for(const c of cols){assert.equal(new Set(c.r.events.map(e=>colors.get(c.id+':'+e.index).color)).size,c.r.events.length);for(const e of c.r.events){const color=colors.get(c.id+':'+e.index);assert(node('#readings').innerHTML.includes('data-slot="'+color.n+'"'));assert(node('#trains').innerHTML.includes('data-slot="'+color.n+'"'));}
+ for(const c of cols){assert.equal(new Set(c.r.events.map(e=>colors.get(c.id+':'+e.index).color)).size,ctx.VerseEvidence.siteSummary(c.r).events);for(const e of c.r.events){const color=colors.get(c.id+':'+e.index);assert(node('#readings').innerHTML.includes('data-slot="'+color.n+'"'));assert(node('#trains').innerHTML.includes('data-slot="'+color.n+'"'));}
   const first=c.r.events[c.indices[0]];assert.equal(node('#column-'+cols.indexOf(c)).scrollTop,first.pos[0]*10-65,'Scroll must reach the aligned occurrence');
  }
- assert.equal((node('#trains').innerHTML.match(/class="wagon /g)||[]).length,cols.reduce((n,c)=>n+c.r.events.length,0));
+ assert.equal((node('#trains').innerHTML.match(/class="wagon /g)||[]).length,cols.reduce((n,c)=>n+ctx.VerseEvidence.siteSummary(c.r).events,0));
  assert.equal((node('#readings').innerHTML.match(/data-token=/g)||[]).length,cols.reduce((n,c)=>n+c.r.tokens.length,0));
- ctx.fixture={id:'overlap',tokens:['א','ב'],events:[0,1,2].map(i=>({index:i,v:i,pos:[0,1],words:['א','ב']}))};vm.runInContext('loadedColumns=[{id:fixture.id,r:fixture,indices:[]}];buildEventPalette();',ctx);const overlap=vm.runInContext('reading(fixture)',ctx);assert.equal((overlap.match(/class="event-badge"/g)||[]).length,3);assert(overlap.includes('linear-gradient'));
+ ctx.fixture={id:'overlap',tokens:['א','ב'],events:[0,1,2].map(i=>({index:i,v:i,pos:i===0?[0]:i===1?[0,1]:[1],words:['א','ב']}))};vm.runInContext('loadedColumns=[{id:fixture.id,r:fixture,indices:[]}];buildEventPalette();',ctx);const overlap=vm.runInContext('reading(fixture)',ctx);assert.equal((overlap.match(/class="event-badge"/g)||[]).length,3);assert(overlap.includes('linear-gradient'));
  // No-match and empty source units must render, with finite chart values.
  const empty=base.units.find(u=>u.sequenceLength===0&&!read(u.shard)[u.id].text.trim());node('#unit').value=empty.id;
  vm.runInContext('activeResult=null;',ctx);await vm.runInContext('showBaseUnit()',ctx);

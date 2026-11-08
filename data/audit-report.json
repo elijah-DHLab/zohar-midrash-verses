@@ -1,0 +1,92 @@
+{
+  "units": 9217,
+  "events": 153459,
+  "books": [
+    {
+      "id": "bamidbar-rabbah",
+      "units": 293,
+      "events": 10173,
+      "lexicalMismatches": 102,
+      "medianTokens": 403,
+      "maxTokens": 3377
+    },
+    {
+      "id": "bereishit-rabbah",
+      "units": 456,
+      "events": 9512,
+      "lexicalMismatches": 105,
+      "medianTokens": 330.5,
+      "maxTokens": 913
+    },
+    {
+      "id": "devarim-rabbah",
+      "units": 93,
+      "events": 1745,
+      "lexicalMismatches": 11,
+      "medianTokens": 359,
+      "maxTokens": 1769
+    },
+    {
+      "id": "midrash-tanchuma",
+      "units": 908,
+      "events": 17134,
+      "lexicalMismatches": 150,
+      "medianTokens": 242.0,
+      "maxTokens": 1719
+    },
+    {
+      "id": "midrash-tanchuma-buber",
+      "units": 1073,
+      "events": 14478,
+      "lexicalMismatches": 156,
+      "wordCountMismatches": 1,
+      "medianTokens": 161,
+      "maxTokens": 1602
+    },
+    {
+      "id": "pesikta-drav-kahanna",
+      "units": 176,
+      "events": 4292,
+      "lexicalMismatches": 59,
+      "medianTokens": 358.0,
+      "maxTokens": 1338
+    },
+    {
+      "id": "shemot-rabbah",
+      "units": 272,
+      "events": 6555,
+      "lexicalMismatches": 59,
+      "medianTokens": 346.0,
+      "maxTokens": 1027
+    },
+    {
+      "id": "vayikra-rabbah",
+      "units": 195,
+      "events": 4346,
+      "lexicalMismatches": 51,
+      "medianTokens": 353,
+      "maxTokens": 1200
+    },
+    {
+      "id": "yalkut-shimoni-on-torah",
+      "units": 2658,
+      "events": 53031,
+      "lexicalMismatches": 922,
+      "medianTokens": 333.0,
+      "maxTokens": 2056
+    },
+    {
+      "id": "zohar",
+      "units": 3093,
+      "events": 32193,
+      "lexicalMismatches": 292,
+      "wordCountMismatches": 1,
+      "medianTokens": 276,
+      "maxTokens": 490
+    }
+  ],
+  "scope": "All supplied text shards; annotation validity is not a philological verification",
+  "oldVerseIdsPreserved": true,
+  "oldVerseCount": 9579,
+  "oldVersePrefixSHA256": "741f391c37f1bed81b814d6ed29e0adc13d446e2932f4a5cee88731c7970589b"
+}

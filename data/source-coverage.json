@@ -1,61 +1,44 @@
 {
-  "summary": "כל יחידות קובצי ה־ZIP שסופקו נקלטו; שבע יחידות תנחומא נוספות נשמרו מהטעינה הישירה הקודמת.",
-  "date": "2026-11-03",
-  "books": [
+  "completeBibliographicCorpus": false,
+  "newArchives": [
     {
-      "id": "midrash-tanchuma",
-      "title": "תנחומא",
-      "archive": "Tanhumah-20261103T105957Z-1-001.zip",
-      "units": 908,
-      "events": 17134,
-      "additionalPreviousUnits": 7,
-      "unitsWithText": 908,
-      "emptyTextUnits": [],
-      "allArchiveUnitsImported": true
+      "name": "Bamidbar_Rabbah-20261107T205345Z-1-001.zip",
+      "sha256": "e4de3f6573f128500b5bbd46fd6b8da61863b55567bc6ed816583c3349097e66",
+      "jsonFiles": 293
     },
     {
-      "id": "midrash-tanchuma-buber",
-      "title": "תנחומא בובר",
-      "archive": "Midrash_Tanchuma_Buber-20261103T110043Z-1-001.zip",
-      "units": 1073,
-      "events": 14478,
-      "additionalPreviousUnits": 0,
-      "unitsWithText": 1073,
-      "emptyTextUnits": [],
-      "allArchiveUnitsImported": true
+      "name": "Bereishit_Rabbah-20261107T205339Z-1-001.zip",
+      "sha256": "dcdf8c9c6e02b4270ee5500c46914a64a8157659ad3983af810dc4a198b57aab",
+      "jsonFiles": 456
     },
     {
-      "id": "zohar",
-      "title": "זוהר",
-      "archive": "Zohar-20261103T105931Z-1-001.zip",
-      "units": 3093,
-      "events": 32193,
-      "additionalPreviousUnits": 0,
-      "unitsWithText": 3090,
-      "emptyTextUnits": [
-        "Kabbalah_Zohar__Addenda_53_1_1",
-        "Kabbalah_Zohar__Addenda_53_2_1",
-        "Kabbalah_Zohar__Addenda_53_3_1"
-      ],
-      "allArchiveUnitsImported": true
+      "name": "Devarim_Rabbah-20261107T205353Z-1-001.zip",
+      "sha256": "ca1cdff9f707c48b3656183065eb511192fff9289a6162800f446c472f6bee8c",
+      "jsonFiles": 93
+    },
+    {
+      "name": "Pesikta_D'Rav_Kahanna-20261107T205319Z-1-001.zip",
+      "sha256": "8b4289ea9c50e92e7801810b910109c0798f81c3844c4cb78f288cffafb0a6df",
+      "jsonFiles": 176
+    },
+    {
+      "name": "Shemot_Rabbah-20261107T205421Z-1-001.zip",
+      "sha256": "f93dcde924c31cf46edbac97c704e89bdc8dc145ba5b3cc2bf32c2df5df96891",
+      "jsonFiles": 272
+    },
+    {
+      "name": "Vayikra_Rabbah-20261107T205425Z-1-001.zip",
+      "sha256": "2b5a44f5cd51233fe10cfab67aa564a52f41f02bc66d8dd376a822a576379b16",
+      "jsonFiles": 195
+    },
+    {
+      "name": "Yalkut_Shimoni_on_Torah-20261107T205240Z-1-001.zip",
+      "sha256": "f9ddbf3d24de370fc195162a38f9466fb6c481ef233c291827a884cf9156be2a",
+      "jsonFiles": 2658
     }
   ],
-  "archives": [
-    {
-      "name": "Midrash_Tanchuma_Buber-20261103T110043Z-1-001.zip",
-      "sha256": "2fcf2b06e05079a0003ca2272604bb8a9e227de7c6d146985873f2463f7534b4",
-      "jsonFiles": 1073
-    },
-    {
-      "name": "Tanhumah-20261103T105957Z-1-001.zip",
-      "sha256": "ddde6bd11199afa056b66409f537e1efb72a28a462927eed3074379c99f8f4fa",
-      "jsonFiles": 901
-    },
-    {
-      "name": "Zohar-20261103T105931Z-1-001.zip",
-      "sha256": "3ed3466ce76edc167078e09ffdb08c9ff01f51ed284414b917bc709d7abf4e73",
-      "jsonFiles": 3093
-    }
-  ],
-  "bibliographicCompletenessVerified": false
+  "inheritedUnits": 5074,
+  "addedUnits": 4143,
+  "totalUnits": 9217,
+  "note": "JSON boundaries are source segmentation, not verified homily boundaries. Original three corpora and verse IDs are preserved."
 }

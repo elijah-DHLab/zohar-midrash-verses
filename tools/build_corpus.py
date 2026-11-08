@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Build a static verse search corpus from raw JSON directories/ZIPs or saved research files. Python stdlib only."""
-import argparse,collections,hashlib,json,re,shutil,sqlite3,unicodedata,zipfile
+import argparse,collections,hashlib,json,re,shutil,sqlite3,unicodedata,zipfile,gzip,statistics
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
-TITLES={'zohar':'זוהר','midrash-tanchuma':'תנחומא','midrash-tanchuma-buber':'תנחומא בובר','bereishit-rabbah':'בראשית רבה','shemot-rabbah':'שמות רבה','vayikra-rabbah':'ויקרא רבה','bamidbar-rabbah':'במדבר רבה','devarim-rabbah':'דברים רבה','ruth-rabbah':'רות רבה','eikhah-rabbah':'איכה רבה','esther-rabbah':'אסתר רבה','midrash-tehillim':'מדרש תהלים','midrash-mishlei':'מדרש משלי','midrash-shmuel':'מדרש שמואל','pirkei-derabbi-eliezer':'פרקי דרבי אליעזר','pesikta-rabbati':'פסיקתא רבתי','pesikta-d-rav-kahanna':'פסיקתא דרב כהנא','aggadat-bereshit':'אגדת בראשית','seder-olam-zutta':'סדר עולם זוטא','tanna-debei-eliyahu-rabbah':'תנא דבי אליהו רבה','mekhilta-drabbi-yishmael':'מכילתא דרבי ישמעאל','mekhilta-derabbi-shimon-ben-yochai':'מכילתא דרבי שמעון בן יוחאי','sifrei-bamidbar':'ספרי במדבר','sifrei-devarim':'ספרי דברים','mishnat-rabbi-eliezer':'משנת רבי אליעזר','yalkut-shimoni-on-torah':'ילקוט שמעוני על התורה','yalkut-shimoni-on-nach':'ילקוט שמעוני על נ״ך'}
+TITLES={'zohar':'זוהר','midrash-tanchuma':'תנחומא הנדפס','midrash-tanchuma-buber':'תנחומא בובר','bereishit-rabbah':'בראשית רבה','shemot-rabbah':'שמות רבה','vayikra-rabbah':'ויקרא רבה','bamidbar-rabbah':'במדבר רבה','devarim-rabbah':'דברים רבה','ruth-rabbah':'רות רבה','eikhah-rabbah':'איכה רבה','esther-rabbah':'אסתר רבה','midrash-tehillim':'מדרש תהלים','midrash-mishlei':'מדרש משלי','midrash-shmuel':'מדרש שמואל','pirkei-derabbi-eliezer':'פרקי דרבי אליעזר','pesikta-rabbati':'פסיקתא רבתי','pesikta-d-rav-kahanna':'פסיקתא דרב כהנא','pesikta-drav-kahanna':'פסיקתא דרב כהנא','aggadat-bereshit':'אגדת בראשית','seder-olam-zutta':'סדר עולם זוטא','tanna-debei-eliyahu-rabbah':'תנא דבי אליהו רבה','mekhilta-drabbi-yishmael':'מכילתא דרבי ישמעאל','mekhilta-derabbi-shimon-ben-yochai':'מכילתא דרבי שמעון בן יוחאי','sifrei-bamidbar':'ספרי במדבר','sifrei-devarim':'ספרי דברים','mishnat-rabbi-eliezer':'משנת רבי אליעזר','yalkut-shimoni-on-torah':'ילקוט שמעוני על התורה','yalkut-shimoni-on-nach':'ילקוט שמעוני על נ״ך'}
 SECTIONS={'Addenda':'תוספות','Idra Zuta':'אדרא זוטא',"Ha'Azinu":'האזינו','Ki Teitzei':'כי תצא','Vayeilech':'וילך','Devarim':'דברים','Eikev':'עקב','Ki Tavo':'כי תבוא','Masei':'מסעי','Nitzavim':'ניצבים',"Re'eh":'ראה','Shoftim':'שופטים',"V'Zot HaBerachah":'וזאת הברכה','Vaetchanan':'ואתחנן','Bereshit':'בראשית','Bereishit':'בראשית','Noach':'נח','Lech Lecha':'לך לך','Vayera':'וירא','Chayei Sara':'חיי שרה','Toldot':'תולדות','Vayetzei':'ויצא','Vayishlach':'וישלח','Vayeshev':'וישב','Miketz':'מקץ','Vayigash':'ויגש','Vayechi':'ויחי','Shemot':'שמות','Vaera':'וארא','Bo':'בא','Beshalach':'בשלח','Yitro':'יתרו','Mishpatim':'משפטים','Terumah':'תרומה','Tetzaveh':'תצוה','Ki Tisa':'כי תשא','Vayakhel':'ויקהל','Pekudei':'פקודי','Vayikra':'ויקרא','Tzav':'צו','Shmini':'שמיני','Tazria':'תזריע','Metzora':'מצורע','Achrei Mot':'אחרי מות','Kedoshim':'קדושים','Emor':'אמור','Behar':'בהר','Bechukotai':'בחוקותי','Bamidbar':'במדבר','Nasso':'נשא',"Beha'alotcha":'בהעלותך',"Sh'lach":'שלח','Korach':'קרח','Chukat':'חקת','Balak':'בלק','Pinchas':'פינחס','Matot':'מטות'}
 def norm(s):
  s=unicodedata.normalize('NFD',str(s)).lower();s=re.sub(r'[\u0591-\u05c7]','',s)
@@ -36,6 +36,9 @@ def canonical(x,book_override=None,title_override=None):
  m=re.match(r'^(.*?)_(\d+)_(\d+)_(\d+)$',tail)
  sec=m[1] if m else tail.rsplit('_',1)[0];label=SECTIONS.get(sec,sec.replace('_',' '))
  if m:label+=' · '+m[3]+('.'+m[4] if m[4]!='1' else '')
+ numeric=re.fullmatch(r'(\d+)_(\d+)_(\d+)',tail)
+ if numeric:
+  chapter=int(numeric[1]);sec=('רמז ' if bid=='yalkut-shimoni-on-torah' else 'פרשה ')+str(chapter);label=sec+' · יחידת מקור '+numeric[3]
  text=x.get('gt_text',x.get('text','')) or x.get('gt_clean_text',x.get('clean','')) or ''
  assert isinstance(text,str),'Invalid text'
  source=x.get('source','');source=source if isinstance(source,str) and source.startswith(('https://drive.google.com/','https://docs.google.com/')) else ''
@@ -52,6 +55,10 @@ def inputs(paths):
      if f.lower().endswith('.json') and not f.startswith('__MACOSX/'):yield str(p)+'!'+f,lambda f=f,z=z:z.read(f)
   else:yield str(p),lambda p=p:p.read_bytes()
 
+def read_json(path):
+ path=Path(path)
+ return json.loads(path.read_bytes() if path.exists() else gzip.decompress(path.with_suffix(path.suffix+'.gz').read_bytes()))
+
 def write_json(path,data):
  path.parent.mkdir(parents=True,exist_ok=True);path.write_text(json.dumps(data,ensure_ascii=False,separators=(',',':')),encoding='utf8')
 
@@ -64,9 +71,9 @@ def build(paths,output=ROOT/'data',cache=ROOT/'.build'/'corpus.sqlite',sample=Fa
  if not replace and not db.execute('select count(*) from records').fetchone()[0] and (Path(output)/'manifest.json').exists():
   existing=json.loads((Path(output)/'manifest.json').read_text(encoding='utf8'))
   for b in existing['books']:
-   ix=json.loads((Path(output)/b['index']).read_text(encoding='utf8'))
+   ix=read_json(Path(output)/b['index'])
    for shard in sorted({u['shard'] for u in ix['units']}):
-    for r in json.loads((Path(output)/shard).read_text(encoding='utf8')).values():
+    for r in read_json(Path(output)/shard).values():
      for e in r['events']:e.pop('v',None)
      payload=json.dumps(r,ensure_ascii=False,separators=(',',':'));digest=hashlib.sha256(payload.encode()).hexdigest()
      db.execute('insert or replace into records values(?,?,?,?,?)',(r['id'],r['book'],r['location'],payload,digest))
@@ -89,7 +96,7 @@ def build(paths,output=ROOT/'data',cache=ROOT/'.build'/'corpus.sqlite',sample=Fa
  out=Path(output);stage=out.with_name(out.name+'.building')
  if stage.exists():shutil.rmtree(stage)
  stage.mkdir(parents=True)
- verses=[];vid={};books=[];totalevents=0
+ verses=read_json(out/'verses.json') if ((out/'verses.json').exists() or (out/'verses.json.gz').exists()) and not replace else [];vid={key:i for i,key in enumerate(verses)};books=[];totalevents=0
  for (bid,) in db.execute('select distinct book from records order by book').fetchall():
   units=[];words=collections.defaultdict(list);post=collections.defaultdict(list);textshard={};shard_no=0;shard_bytes=0;network={};book_title='';maxseq=0
   def flush():
@@ -122,7 +129,7 @@ def build(paths,output=ROOT/'data',cache=ROOT/'.build'/'corpus.sqlite',sample=Fa
   word_paths={}
   for bucket,entries in sorted(buckets.items()):
    path=f'words/{bid}/{bucket}.json';write_json(stage/path,entries);word_paths[str(bucket)]=path
-  books.append({'id':bid,'title':book_title,'units':len(units),'events':sum(len(u['seq']) for u in units),'maxSequence':maxseq,'index':'indexes/'+bid+'.json','wordBuckets':word_paths,'network':'networks/'+bid+'.json','indexBytes':(stage/'indexes'/(bid+'.json')).stat().st_size,'catalog':'catalogs/'+bid+'.json'})
+  books.append({'id':bid,'title':book_title,'units':len(units),'events':sum(len(u['seq']) for u in units),'maxSequence':maxseq,'medianTokens':statistics.median(len(r['text'].split()) for r in rs),'maxTokens':max(len(r['text'].split()) for r in rs),'unitBasis':'קובץ JSON מן הקלט; גבולות דרשה לא אומתו','index':'indexes/'+bid+'.json','wordBuckets':word_paths,'network':'networks/'+bid+'.json','indexBytes':(stage/'indexes'/(bid+'.json')).stat().st_size,'catalog':'catalogs/'+bid+'.json'})
  stats['stored_units']=sum(b['units'] for b in books);stats['books']=len(books);stats['events']=totalevents
  version=hashlib.sha256(''.join(row[0] for row in db.execute('select hash from records order by id')).encode()).hexdigest()[:20]
  manifest={'version':version,'schema':'verse-search/3','coverage':'sample' if sample else 'imported-input','completeBibliographicCorpus':False,'books':books,'verses':'verses.json','units':stats['stored_units'],'events':totalevents,'buildReport':'build-report.json'}
