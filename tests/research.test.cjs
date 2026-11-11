@@ -1,5 +1,5 @@
 const assert=require('node:assert/strict'),fs=require('fs'),path=require('path');
-const R=require('../assets/release-6.4/research-core.js'),read=require('./read-data.cjs');
+const R=require('../assets/release-7/research-core.js'),read=require('./read-data.cjs');
 const refs=['Genesis:1:1','Genesis:1:2','Job:1:1','Psalms:1:1'];
 const es=vs=>vs.map((v,i)=>({v,index:i,pos:[i],words:['מילה']}));
 assert.equal(R.groups(es([0,0,1]),refs,{collapse:true}).length,2);

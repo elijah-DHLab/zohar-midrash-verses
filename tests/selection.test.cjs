@@ -1,5 +1,5 @@
 const fs=require('fs'),assert=require('assert'),path=require('path');
-const root=path.join(__dirname,'..'),S=require('../assets/release-6.4/search-core.js'),L=require('../assets/release-6.4/lab-core.js');
+const root=path.join(__dirname,'..'),S=require('../assets/release-7/search-core.js'),L=require('../assets/release-7/lab-core.js');
 const read=require('./read-data.cjs');
 (async()=>{
  const manifest=read('manifest.json'),engine=new S.Engine(manifest,read),index=read(manifest.books.find(b=>b.id==='zohar').index),targets=['midrash-tanchuma','midrash-tanchuma-buber'];

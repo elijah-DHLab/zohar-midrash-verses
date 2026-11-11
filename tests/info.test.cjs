@@ -1,4 +1,4 @@
-const fs=require('fs'),vm=require('vm'),assert=require('node:assert/strict'),H=require('../assets/release-6.4/info.js');
+const fs=require('fs'),vm=require('vm'),assert=require('node:assert/strict'),H=require('../assets/release-7/info.js');
 assert(H.lookup('p').body.includes('אינו ההסתברות'));
 assert(H.lookup('q').body.includes('Benjamini'));
 assert(H.lookup('זרע לשחזור').body.includes('אותם נתונים'));
@@ -30,7 +30,7 @@ const heading=add('h2','ניסויים וממצאים');const label=add('label',
 const field=add('div','');field.className='multi-field';const picker=add('button','הכול','unitSummary',field);const nested=add('h3','זוהר','',add('button','תוצאה'));const options=add('div','');options.className='multi-options';add('label','דרשה א','',options);
 const table=add('table',''),thead=add('thead','','',table),tr=add('tr','','',thead),p=add('th','p','',tr),q=add('th','q','',tr);
 const ctx=vm.createContext({document,console,setTimeout,clearTimeout,MutationObserver:class{constructor(f){observer=f;}observe(){}},innerWidth:1024,innerHeight:768,addEventListener:(t,f)=>(winListeners[t]??=[]).push(f)});ctx.window=ctx;
-vm.runInContext(fs.readFileSync(__dirname+'/../assets/release-6.4/info.js','utf8'),ctx);
+vm.runInContext(fs.readFileSync(__dirname+'/../assets/release-7/info.js','utf8'),ctx);
 (async()=>{
  const icons=()=>body.querySelectorAll('.context-info-button');assert.equal(icons().length,5);assert(!label.querySelector('button'),'Label activation is not polluted by another button');assert(!nested.querySelector('button'),'No nested buttons');
  ctx.ContextInfo.decorate();assert.equal(icons().length,5,'Decoration is idempotent');const pop=body.querySelector('#contextInfoPopup'),icon=heading.querySelector('.context-info-button');assert(pop.hidden);

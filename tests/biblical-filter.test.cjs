@@ -1,4 +1,4 @@
-const assert=require('assert/strict'),S=require('../assets/release-6.4/search-core.js'),C=require('../assets/release-6.4/sequence-core.js');
+const assert=require('assert/strict'),S=require('../assets/release-7/search-core.js'),C=require('../assets/release-7/sequence-core.js');
 const refs=['Genesis:1:1','Genesis:1:2','Genesis:1:3','Job:2:1','Genesis:1:5'];
 const seq=ks=>ks.map((key,i)=>({key,keys:[key],index:i,site:i,choices:{[key]:i}}));
 function pure(x,y,mode='bag'){const a=seq(x),b=seq(y);return S.biblicalOnly(C.longest(a,b,mode),a,b,refs);}

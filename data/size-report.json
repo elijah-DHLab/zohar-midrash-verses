@@ -1,10 +1,7 @@
 {
-  "schema": "verse-search/size-1",
-  "dataBytesExcludingThisReport": 17486147,
-  "previousReleaseDataBytes": 16961705,
-  "researchPresetBytes": 288708,
-  "textShardsByteIdenticalTo62": 339,
-  "gzipJSONFiles": 1001,
-  "rawArchivesIncluded": false,
-  "requires": "Modern browser: Web Workers and DecompressionStream(gzip)"
+  "beforeBytes": 85780656,
+  "afterBytes": 19362817,
+  "losslessGzip": true,
+  "requires": "DecompressionStream(gzip) in a modern browser",
+  "rawArchivesIncluded": false
 }

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Node 18+; no dependencies. A reproducible preset, loaded only when the lab is opened.
 const fs=require('fs'),path=require('path'),zlib=require('zlib');const root=path.join(__dirname,'..');
-const V=require('../assets/release-6.4/evidence-core.js');
+const V=require('../assets/release-7/evidence-core.js');
 function read(name){const p=path.join(root,'data',name);return JSON.parse(fs.existsSync(p)?fs.readFileSync(p):zlib.gunzipSync(fs.readFileSync(p+'.gz')));}
 (async()=>{const m=read('manifest.json'),indexes={};for(const b of m.books)indexes[b.id]=read(b.index);
 const queryFile=process.argv.find(a=>a.startsWith('--query='))?.slice(8),q=queryFile?JSON.parse(fs.readFileSync(queryFile)): {base:'zohar',targets:m.books.filter(b=>b.id!=='zohar').map(b=>b.id),min:3,options:{mode:'gapped',collapse:true,ambiguity:'site',short:false,excludeBiblical:true},seed:73163,permutations:99,sampleSize:3093};
